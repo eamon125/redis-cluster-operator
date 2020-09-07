@@ -1,0 +1,32 @@
+apiVersion: rds.cluster/v1alpha1
+kind: RDS
+metadata:
+  name: example
+spec:
+  # Add fields here
+  image: harbor.gzky.com/dongxy-projects/rds:5.0.8
+  masterSize: 3
+  clusterReplica: 1
+  redisConfig:
+    rename-command-config: "GZKY-CONFIG"
+    repl-backlog-size: "512mb"
+    masterauth: "rdsAuthPass"
+    requirepass: "rdsAuthPass"
+    maxmemory: "1G"
+    maxmemory-policy: "noeviction"
+    cluster-node-timeout: "5000"
+    client-output-buffer-limit: "slave 1024mb 512mb 600"
+  storage:
+    size: 1Gi
+    ## support nfs or empty
+    type: nfs
+    class: managed-nfs-storage
+    delete-claim: true
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "128m"
+    limits:
+      memory: "256Mi"
+      cpu: "256m"
+

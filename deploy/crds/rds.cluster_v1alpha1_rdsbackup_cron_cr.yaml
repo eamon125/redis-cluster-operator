@@ -1,0 +1,21 @@
+apiVersion: rds.cluster/v1alpha1
+kind: Rdsbackup
+metadata:
+  name: example-rdsbackup
+spec:
+  # Add fields here
+  image: "harbor.gzky.com/dongxy-projects/rds:5.0.8"
+  instance: "example"
+  instance_storage:
+    type: "nfs"
+    class: "managed-nfs-storage"
+  backup_storage:
+    type: "minio"
+    endpoint: "192.168.6.172:9000"
+    bucket: "example"
+    access_key: "minioadmin"
+    secret_key: "minioadmin"
+    ssl: true
+  job_type: "cron"
+  # cron rule：https://godoc.org/github.com/robfig/cron
+  cron_job_string: "50 * * * *"

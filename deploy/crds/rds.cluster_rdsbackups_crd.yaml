@@ -1,0 +1,89 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: rdsbackups.rds.cluster
+spec:
+  group: rds.cluster
+  names:
+    kind: Rdsbackup
+    listKind: RdsbackupList
+    plural: rdsbackups
+    singular: rdsbackup
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Rdsbackup is the Schema for the rdsbackups API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RdsbackupSpec defines the desired state of Rdsbackup
+            properties:
+              backup_storage:
+                properties:
+                  access_key:
+                    type: string
+                  bucket:
+                    type: string
+                  endpoint:
+                    type: string
+                  secret_key:
+                    type: string
+                  ssl:
+                    type: boolean
+                  type:
+                    type: string
+                required:
+                - bucket
+                - endpoint
+                - type
+                type: object
+              cron_job_string:
+                type: string
+              image:
+                description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+                  Important: Run "operator-sdk generate k8s" to regenerate code after
+                  modifying this file Add custom validation using kubebuilder tags:
+                  https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+                type: string
+              instance:
+                type: string
+              instance_storage:
+                properties:
+                  class:
+                    type: string
+                  type:
+                    type: string
+                required:
+                - class
+                - type
+                type: object
+              job_type:
+                type: string
+            required:
+            - backup_storage
+            - image
+            - instance
+            - instance_storage
+            - job_type
+            type: object
+          status:
+            description: RdsbackupStatus defines the observed state of Rdsbackup
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

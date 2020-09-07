@@ -1,0 +1,93 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: rdsrestores.rds.cluster
+spec:
+  group: rds.cluster
+  names:
+    kind: RdsRestore
+    listKind: RdsRestoreList
+    plural: rdsrestores
+    singular: rdsrestore
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: RdsRestore is the Schema for the rdsrestores API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RdsRestoreSpec defines the desired state of RdsRestore
+            properties:
+              image:
+                description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+                                Important: Run "operator-sdk generate k8s" to regenerate code after
+                                modifying this file Add custom validation using kubebuilder tags:
+                                https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html'
+                type: string
+              instance_pvc_type:
+                type: string
+              instance:
+                type: string
+              restore_storage:
+                properties:
+                  access_key:
+                    type: string
+                  bucket:
+                    type: string
+                  endpoint:
+                    type: string
+                  secret_key:
+                    type: string
+                  ssl:
+                    type: boolean
+                  type:
+                    type: string
+                required:
+                  - bucket
+                  - endpoint
+                  - type
+                type: object
+              storage:
+                properties:
+                  class:
+                    type: string
+                  size:
+                    anyOf:
+                      - type: integer
+                      - type: string
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  type:
+                    type: string
+                required:
+                  - class
+                  - size
+                  - type
+                type: object
+            required:
+            - restore_storage
+            - image
+            - instance_pvc_type
+            - instance
+            type: object
+          status:
+            description: RdsRestoreStatus defines the observed state of RdsRestore
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

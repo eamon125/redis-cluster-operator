@@ -1,0 +1,21 @@
+apiVersion: rds.cluster/v1alpha1
+kind: RdsRestore
+metadata:
+  name: example-rdsrestore
+spec:
+  # Add fields here
+  image: "harbor.gzky.com/dongxy-projects/rds:5.0.8"
+  instance: "example-2"  ##  需要恢复的新集群的实例名称
+  instance_pvc_type: "nfs"
+  restore_storage:
+    type: "minio"
+    endpoint: "192.168.6.172:9000"
+    bucket: "example-2020-07-21-14-14-30"
+    access_key: "minioadmin"
+    secret_key: "minioadmin"
+    ssl: false
+  storage:
+    size: 1Gi
+    ## support nfs or empty
+    type: nfs
+    class: managed-nfs-storage

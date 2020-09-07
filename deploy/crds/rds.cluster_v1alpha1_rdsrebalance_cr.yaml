@@ -1,0 +1,8 @@
+apiVersion: rds.cluster/v1alpha1
+kind: RdsRebalance
+metadata:
+  name: example-rdsrebalance
+spec:
+  image: "harbor.gzky.com/dongxy-projects/rds:5.0.8"
+  masterauth: "rdsAuthPass"
+  instance: "example"
